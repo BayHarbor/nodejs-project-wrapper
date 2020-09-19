@@ -4,10 +4,19 @@ const numberFactEl = document.getElementById("number-fact");
 const factEl = document.getElementById("fact");
 
 async function getEvent(path) {
-    const resp = await fetch(`http://numbersapi.com/${path}`);
-    const respData = await resp.text();
+    const resp = await fetch(`https://numbersapi.p.rapidapi.com/${path}?fragment=false&json=true`, {
+        "method": "GET",
+        "headers": {
+            "x-rapidapi-host": "numbersapi.p.rapidapi.com",
+            "x-rapidapi-key": "4167d82c33msh697f2dc5f4dda2ap10bd93jsn2e10415e6a09"
+        }        
+    })
+    .catch(err => {
+        console.log(err);
+    });
+    const respData = await resp.json();
 
-    factEl.innerText = respData;
+    factEl.innerText = (respData['year'] ? "On this day in " + respData['year'] : respData['number']) + ": " + respData['text'];
 }
 
 function todaysDate(){
